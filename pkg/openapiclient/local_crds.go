@@ -110,6 +110,12 @@ func (k *localCRDsClient) Paths() (map[string]openapi.GroupVersion, error) {
 			if err != nil {
 				return nil, err
 			}
+			// XXX Well jsProps can be nil, so we need to check for that
+			if jsProps == nil {
+				// just a workaround for now to avoid nil pointer dereference
+				// There should be at least some sort of feedback to the user
+				continue
+			}
 			ss, err := structuralschema.NewStructural(jsProps.OpenAPIV3Schema)
 			if err != nil {
 				return nil, err
